@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <div class="chatBox">
+        <div id="chatList" style="width: 300px; height: 300px; border: 1px solid; overflow: auto;"></div>
+        <div>
+            <input type="text" id="messageInput" placeholder="메시지를 입력해 주세요.">
+            <button id="messageSendBtn">전송</button>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        const websocket = new WebSocket('ws://localhost:8080/ws/chat');
+
+        const onOpen = () => {
+            websocket.send('입장하셨습니다.');
+        };
+
+        const onClose = () => {
+            websocket.send('퇴장하셨습니다.');
+        };
+
+        const onMessage = (msg) => {
+            $('#chatList').append('<br /><div>' + msg.data + '</div>');
+        };
+
+        const send = () => {
+            websocket.send($('#messageInput').val());
+            $('#messageInput').val('');
+        };
+
+        websocket.onmessage = onMessage;
+        websocket.onopen = onOpen;
+        websocket.onclose = onClose;
+
+        $('#messageSendBtn').on('click', function() {
+            send();
+        });
+    </script>
+</body>
+</html>
