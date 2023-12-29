@@ -19,11 +19,11 @@
         const username = $('#username').val();
 
         const onOpen = () => {
-            websocket.send(username + '님이 입장하셨습니다.');
+            websocket.send('입장하셨습니다.');
         };
 
         const onClose = () => {
-            websocket.send(username + '님이 퇴장하셨습니다.');
+            websocket.send('퇴장하셨습니다.');
         };
 
         const onMessage = (msg) => {
@@ -31,7 +31,7 @@
         };
 
         const send = () => {
-            websocket.send(username + ' : ' + $('#messageInput').val());
+            websocket.send($('#messageInput').val());
             $('#messageInput').val('');
         };
 
